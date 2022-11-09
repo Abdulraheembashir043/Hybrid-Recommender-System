@@ -65,19 +65,19 @@ def run():
     img1 = img1.resize((350,250),)
     st.image(img1,use_column_width=False)
     st.title("Hybrid Movie Recommender System")
-    st.markdown('''<h4 style='text-align: left; color: #d73b5c;'>* Data is based "IMDB 5000 Movie Dataset"</h4>''',
+    st.markdown('''<h4 style='text-align: left; color: #d73b5c;'>* The Data is based on "IMDB 5000 Movie Dataset"</h4>''',
                 unsafe_allow_html=True)
     genres = ['Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family',
               'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'News',
               'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Thriller', 'War', 'Western']
     movies = [title[0] for title in movie_titles]
     category = ['--Select--', 'Movie based', 'Genre based']
-    cat_op = st.selectbox('Select Recommendation Type', category)
+    cat_op = st.selectbox('Select Recommendation Type You Prefer', category)
     if cat_op == category[0]:
         st.warning('Please select Recommendation Type!!')
     elif cat_op == category[1]:
         select_movie = st.selectbox('Select movie: (Recommendation will be based on this selection)', ['--Select--'] + movies)
-        dec = st.radio("Want to Fetch Movie Poster?", ('Yes', 'No'))
+        dec = st.radio("Do You Want to Fetch Movie Poster?", ('Yes', 'No'))
         # if dec == 'Yes':
         #     st.markdown('''<h4 style='text-align: left; color: #d73b5c;'>* Fetching a Movie Posters will take a time."</h4>''',
         #             unsafe_allow_html=True)
@@ -85,13 +85,13 @@ def run():
             if select_movie == '--Select--':
                 st.warning('Please select Movie!!')
             else:
-                no_of_reco = st.slider('Number of movies you want Recommended:', min_value=5, max_value=20, step=1)
+                no_of_reco = st.slider('How many Number of movies would you want Recommended for you:', min_value=5, max_value=20, step=1)
                 genres = data[movies.index(select_movie)]
                 test_points = genres
                 table = KNN_Movie_Recommender(test_points, no_of_reco+1)
                 table.pop(0)
                 c = 0
-                st.success('Some of the movies from our Recommendation, have a look below')
+                st.success('Some of the movies from our Recommendations are shown below')
                 for movie, link, ratings in table:
                     c+=1
                     director,cast,story,total_rat = get_movie_info(link)
@@ -107,13 +107,13 @@ def run():
             if select_movie == '--Select--':
                 st.warning('Please select Movie!!')
             else:
-                no_of_reco = st.slider('Number of movies you want Recommended:', min_value=5, max_value=20, step=1)
+                no_of_reco = st.slider('How many Number of movies would you want Recommended for you:', min_value=5, max_value=20, step=1)
                 genres = data[movies.index(select_movie)]
                 test_points = genres
                 table = KNN_Movie_Recommender(test_points, no_of_reco+1)
                 table.pop(0)
                 c = 0
-                st.success('Some of the movies from our Recommendation, have a look below')
+                st.success('Some of the movies from our Recommendations are shown below')
                 for movie, link, ratings in table:
                     c += 1
                     st.markdown(f"({c})[ {movie}]({link})")
@@ -126,18 +126,18 @@ def run():
                     st.markdown('IMDB Rating: ' + str(ratings) + '⭐')
     elif cat_op == category[2]:
         sel_gen = st.multiselect('Select Genres:', genres)
-        dec = st.radio("Want to Fetch Movie Poster?", ('Yes', 'No'))
+        dec = st.radio("Do You Want to Fetch Movie Poster?", ('Yes', 'No'))
         st.markdown('''<h4 style='text-align: left; color: #d73b5c;'>* Fetching a Movie Posters will take a time."</h4>''',
                     unsafe_allow_html=True)
         if dec == 'No':
             if sel_gen:
                 imdb_score = st.slider('Choose IMDb score:', 1, 10, 8)
-                no_of_reco = st.number_input('Number of movies:', min_value=5, max_value=20, step=1)
+                no_of_reco = st.number_input('How many Number of movies would you want Recommended for you:', min_value=5, max_value=20, step=1)
                 test_point = [1 if genre in sel_gen else 0 for genre in genres]
                 test_point.append(imdb_score)
                 table = KNN_Movie_Recommender(test_point, no_of_reco)
                 c = 0
-                st.success('Some of the movies from our Recommendation, have a look below')
+                st.success('Some of the movies from our Recommendations are shown below')
                 for movie, link, ratings in table:
                     c += 1
                     st.markdown(f"({c})[ {movie}]({link})")
@@ -150,12 +150,12 @@ def run():
         else:
             if sel_gen:
                 imdb_score = st.slider('Choose IMDb score:', 1, 10, 8)
-                no_of_reco = st.number_input('Number of movies:', min_value=5, max_value=20, step=1)
+                no_of_reco = st.number_input('How many Number of movies would you want Recommended for you:', min_value=5, max_value=20, step=1)
                 test_point = [1 if genre in sel_gen else 0 for genre in genres]
                 test_point.append(imdb_score)
                 table = KNN_Movie_Recommender(test_point, no_of_reco)
                 c = 0
-                st.success('Some of the movies from our Recommendation, have a look below')
+                st.success('Some of the movies from our Recommendations are shown below')
                 for movie, link, ratings in table:
                     c += 1
                     st.markdown(f"({c})[ {movie}]({link})")
